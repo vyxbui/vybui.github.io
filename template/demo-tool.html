@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header id="top_homepage">
+      <h1>Vy Bui</h1>
+      <p>Undergraduate student in Honours Computer Science at McGill University, Montreal</p>
+    </header>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="demo-tool.html">Demo</a></li>
+        <li><a href=""></a></li>
+      </ul>
+    </nav>
+    <main>
+        <div class="container">
+        <h2>Educational and unbiased generative AI tool</h2>
+        <textarea id="prompt" placeholder="Type your prompt here..."></textarea>
+        <button id="submit">Generate</button>
+        <div id="output" class="response"></div>
+        </div>
+
+        <script>
+            document.getElementById("submit").addEventListener("click", async () => {
+                const prompt = document.getElementById("prompt").value;
+                const outputDiv = document.getElementById("output");
+                const button = document.getElementById("submit");
+
+                button.disabled = true;
+                outputDiv.textContent = "Generating response...";
+
+                const res = await fetch("http://127.0.0.1:5000/generate/", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ user_prompt: prompt }),
+                });
+
+                const data = await res.json();
+                outputDiv.textContent = data.response || data.error || "No response.";
+                button.disabled = false;
+            });
+        </script>
+    </main>
+    <footer>
+     
+    </footer>
+  </body>
+</html>
